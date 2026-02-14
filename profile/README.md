@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/MassLogic/.github/raw/main/brand-assets/logos/MIMO_by_MassLogic_Full_Logo.png" width="600">
+</p>
+
 # MassLogic
 **The Governed AI Platform for Enterprise Marketing**
 
