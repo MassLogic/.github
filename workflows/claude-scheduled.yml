@@ -1,0 +1,38 @@
+name: Claude Scheduled Tasks
+
+on:
+  schedule:
+    # Run daily at 09:00 UTC (configurable)
+    - cron: "0 9 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "Override scheduled task"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  scheduled-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run scheduled Claude task
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            ${{ github.event.inputs.task || 'Review any open issues and PRs. Summarize their status and flag anything that needs attention. Post a summary as a new issue titled "Daily Review — <date>".' }}
+
+      - name: Write summary
+        if: always()
+        run: |
+          echo "## Claude Scheduled Task Complete" >> $GITHUB_STEP_SUMMARY
+          echo "Ran at: $(date -u)" >> $GITHUB_STEP_SUMMARY

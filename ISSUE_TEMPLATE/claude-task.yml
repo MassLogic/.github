@@ -1,0 +1,61 @@
+name: Claude Task
+description: Submit a task for Claude to execute via remote control
+title: "[Claude] "
+labels: ["claude-task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to submit a task for Claude. The task will be picked up
+        by the Claude Remote Control workflow when you comment `/claude` on the issue.
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      description: How should Claude approach this task?
+      options:
+        - research
+        - implement
+        - review
+        - fix
+    validations:
+      required: true
+
+  - type: input
+    id: repository
+    attributes:
+      label: Target Repository
+      description: "Which repository should Claude work on? (owner/repo format, leave blank for this repo)"
+      placeholder: "MassLogic/example-repo"
+    validations:
+      required: false
+
+  - type: input
+    id: branch
+    attributes:
+      label: Target Branch
+      description: "Which branch should Claude work against?"
+      placeholder: "main"
+      value: "main"
+    validations:
+      required: false
+
+  - type: textarea
+    id: task
+    attributes:
+      label: Task Description
+      description: Describe what you want Claude to do. Be specific.
+      placeholder: |
+        Example: Review the authentication module in src/auth/ and identify
+        any security vulnerabilities or improvements.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any extra context, links, or constraints Claude should know about.
+    validations:
+      required: false

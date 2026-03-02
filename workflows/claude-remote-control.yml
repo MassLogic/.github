@@ -1,0 +1,186 @@
+name: Claude Remote Control
+
+on:
+  # Manual trigger with customizable inputs
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: "Prompt or task description for Claude"
+        required: true
+        type: string
+      repository:
+        description: "Target repository (owner/repo) — leave blank for org-wide tasks"
+        required: false
+        type: string
+      branch:
+        description: "Target branch (defaults to main)"
+        required: false
+        type: string
+        default: "main"
+      mode:
+        description: "Execution mode"
+        required: true
+        type: choice
+        options:
+          - research
+          - implement
+          - review
+          - fix
+        default: "research"
+
+  # Trigger via issue comments with /claude command
+  issue_comment:
+    types: [created]
+
+  # Trigger via repository dispatch (API-driven)
+  repository_dispatch:
+    types: [claude-remote-control]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  # Gate: determine if this run should proceed
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+      prompt: ${{ steps.check.outputs.prompt }}
+      mode: ${{ steps.check.outputs.mode }}
+      repository: ${{ steps.check.outputs.repository }}
+      branch: ${{ steps.check.outputs.branch }}
+    steps:
+      - name: Check trigger and extract parameters
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const event = context.eventName;
+
+            if (event === 'workflow_dispatch') {
+              core.setOutput('should_run', 'true');
+              core.setOutput('prompt', context.payload.inputs.prompt);
+              core.setOutput('mode', context.payload.inputs.mode);
+              core.setOutput('repository', context.payload.inputs.repository || '');
+              core.setOutput('branch', context.payload.inputs.branch || 'main');
+              return;
+            }
+
+            if (event === 'repository_dispatch') {
+              const payload = context.payload.client_payload || {};
+              core.setOutput('should_run', 'true');
+              core.setOutput('prompt', payload.prompt || '');
+              core.setOutput('mode', payload.mode || 'research');
+              core.setOutput('repository', payload.repository || '');
+              core.setOutput('branch', payload.branch || 'main');
+              return;
+            }
+
+            if (event === 'issue_comment') {
+              const comment = context.payload.comment.body.trim();
+              const match = comment.match(/^\/claude\s+(?:--(\w+)\s+)?(.+)/s);
+
+              if (!match) {
+                core.setOutput('should_run', 'false');
+                return;
+              }
+
+              // Check that commenter has write access
+              const { data: permLevel } = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: context.payload.comment.user.login,
+              });
+              const allowed = ['admin', 'write', 'maintain'];
+              if (!allowed.includes(permLevel.permission)) {
+                core.setOutput('should_run', 'false');
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: '⛔ You do not have sufficient permissions to use `/claude`.',
+                });
+                return;
+              }
+
+              const mode = match[1] || 'research';
+              const prompt = match[2].trim();
+
+              core.setOutput('should_run', 'true');
+              core.setOutput('prompt', prompt);
+              core.setOutput('mode', mode);
+              core.setOutput('repository', '');
+              core.setOutput('branch', 'main');
+
+              // React to the comment to acknowledge
+              await github.rest.reactions.createForIssueComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: context.payload.comment.id,
+                content: 'eyes',
+              });
+            }
+
+  # Main execution job
+  execute:
+    needs: gate
+    if: needs.gate.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ needs.gate.outputs.repository || github.repository }}
+          ref: ${{ needs.gate.outputs.branch }}
+          fetch-depth: 0
+
+      - name: Set up environment
+        run: |
+          echo "CLAUDE_PROMPT<<EOF" >> $GITHUB_ENV
+          echo "${{ needs.gate.outputs.prompt }}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "CLAUDE_MODE=${{ needs.gate.outputs.mode }}" >> $GITHUB_ENV
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Mode: ${{ needs.gate.outputs.mode }}
+            Task: ${{ needs.gate.outputs.prompt }}
+
+            Instructions by mode:
+            - research: Investigate the codebase and answer the question. Do NOT make changes.
+            - implement: Make the requested changes, create a branch, commit, and open a PR.
+            - review: Review the code or PR and provide detailed feedback.
+            - fix: Identify and fix the described bug or issue.
+
+      - name: Post results to issue (if triggered by comment)
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const result = `${{ steps.claude.outputs.result }}`;
+            const mode = '${{ needs.gate.outputs.mode }}';
+            const modeLabel = { research: '🔍 Research', implement: '🛠️ Implement', review: '📝 Review', fix: '🔧 Fix' };
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `### ${modeLabel[mode] || '🤖 Claude'} Result\n\n${result || '_No output returned._'}`,
+            });
+
+      - name: Write summary
+        if: always()
+        run: |
+          echo "## Claude Remote Control Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Mode:** ${{ needs.gate.outputs.mode }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Prompt:** ${{ needs.gate.outputs.prompt }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "See the Claude Code action output above for full results." >> $GITHUB_STEP_SUMMARY
