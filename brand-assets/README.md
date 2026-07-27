@@ -1,26 +1,29 @@
-# MassLogic Brand Assets
+# MassLogic Labs Brand Assets
 
-This directory contains official, approved visual assets for the MassLogic ecosystem. Use of these assets is subject to the [MassLogic Brand Guidelines v1.1](https://github.com/MassLogic/.github/blob/main/BRANDING.md).
+This directory contains official, approved visual assets for MassLogic Labs and MIMO. Use of these assets is governed by the MassLogic Labs Brand Hub (single source of truth) and [BRANDING.md](../BRANDING.md) in this repo.
 
-Current assets are provided in the following formats to support various use cases:
+## Available formats
 
-### 📁 Available Formats
+### Vector (.svg)
+For web and scaling without loss of quality. Use these for digital applications where the mark may be displayed at various sizes.
 
-#### **Vector (.svg)**
-For web and scaling without loss of quality. Use these files for digital applications where the logo may be displayed at various sizes.
+### Print (.eps or .pdf)
+For high-quality physical materials — professional printing, signage, and large-scale applications.
 
-#### **Print (.eps or .pdf)**
-For high-quality physical materials. These vector formats are ideal for professional printing, signage, and large-scale applications.
+### Raster (.png with transparency)
+For presentations and quick digital use. High-resolution PNGs with transparency for immediate use in documents and decks.
 
-#### **Raster (.png with transparency)**
-For internal presentations and quick digital use. High-resolution PNG files with transparency are provided for immediate use in presentations and documents.
+## Logo directories
 
-### 🚫 Usage Restrictions
-- **No Alterations**: Do not rotate, skew, or apply shadows/gradients to any logo.
-- - **Clear Space**: Maintain sufficient clear space around all marks.
-  - - **Approved Files Only**: Do not recreate or redraw any MassLogic logo.
-   
-    - ### 📧 Support & Approvals
-    - All co-branded materials must be reviewed and approved prior to publication.
-    - - **Brand Approvals**: brand@masslogic.io
-      - - **Partnerships**: partnerships@masslogic.io
+- `logos/mimo/` — MIMO wordmarks (SVG + PNG, on-light and on-dark).
+- `logos/masslogic/` — MassLogic Labs wordmarks (light and dark).
+
+## Usage restrictions
+
+- **No alterations:** do not rotate, skew, recolor, or apply shadows/gradients to any mark.
+- **Clear space:** maintain sufficient clear space around all marks.
+- **Approved files only:** do not recreate or redraw any MIMO or MassLogic Labs mark.
+
+## Approvals
+
+All co-branded materials must be reviewed and approved prior to publication. Contact: inquiry@masslogiclabs.com

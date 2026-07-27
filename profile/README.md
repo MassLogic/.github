@@ -1,23 +1,29 @@
 <p align="center">
-  <img src="https://github.com/MassLogic/.github/raw/main/brand-assets/logos/MIMO_by_MassLogic_Full_Logo.png" width="600">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/MassLogicLabs/.github/raw/main/brand-assets/logos/mimo/mimo-wordmark-on-dark.svg">
+    <img src="https://github.com/MassLogicLabs/.github/raw/main/brand-assets/logos/mimo/mimo-wordmark-on-light.svg" width="360" alt="MIMO">
+  </picture>
 </p>
 
-# MassLogic
-**The Governed AI Platform for Enterprise Marketing**
+<p align="center"><strong>The intelligence engine for enterprise marketing.</strong></p>
 
-MIMO™ by MassLogic is the neutral AI orchestration spine for the modern enterprise. We provide a trusted context layer that eliminates the MarTech "Integration Tax" and enables scalable, brand-compliant AI execution.
+MIMO™ is the brand intelligence layer that governs every AI touching a brand, regardless of vendor. The MarTech stack manages branding; MIMO governs brand. It teaches AI what a brand *means*, not just what it looks like — built on the only independently certified marketing standards, anchored by MASB.
 
-### 🛡️ The Four Product Pillars
-- **MIMO™ by MassLogic**: The industry-leading Neutral AI Operating System for enterprise marketing.
-- **MIMO Marketplace™**: The Expert Agent Hub for licensed IP and AI agents.
-- **Brand Brain™**: The Proprietary Intelligence Hub for RAG-powered brand knowledge.
-- **Marketing Operating Model™**: The strategic framework for structuring enterprise marketing operations with AI.
+MIMO is the platform from **MassLogic Labs, Inc.** Lead with human intelligence. Scale with AI.
 
-### 🎯 Our Mission
-We bridge the gap between high-level brand intelligence and autonomous technical execution. Our framework is designed to help organizations **lead with human intelligence and grow with AI collaborators.**
+### The MIMO platform
+
+- **MIMO Workspace™** — the CMO command surface; what a customer deploys and sees.
+- **MIMO Intelligence™** — the governed context and memory layer.
+- **MIMO Orchestration™** — agent and MarTech orchestration.
+- **MIMO Marketspace™** — the marketplace for licensed IP and certified agents.
+
+### Our belief
+
+The greatest brands were built by human minds that knew when to break the pattern. AI is the pattern. MIMO exists so your brand never becomes one.
 
 ---
-🌐 [masslogic.io](https://masslogic.io) | ✉️ [Contact Partnerships](mailto:partnerships@masslogic.io)
 
-> **Legal Attribution:**
-> MIMO™, MIMO Marketplace™, Brand Brain™, Marketing Operating Model™, MassLogic™, and the MassLogic logo are trademarks of MassLogic (or its successors and assigns). All other trademarks are the property of their respective owners[cite: 1].
+🌐 [masslogiclabs.com](https://masslogiclabs.com) | ✉️ [inquiry@masslogiclabs.com](mailto:inquiry@masslogiclabs.com)
+
+> © MassLogic Labs, Inc. 2026. MIMO™, MIMO Workspace™, MIMO Intelligence™, MIMO Orchestration™, MIMO Marketspace™, and MassLogic Labs™ are trademarks of MassLogic Labs, Inc. All other trademarks are the property of their respective owners.
