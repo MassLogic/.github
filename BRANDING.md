@@ -24,7 +24,9 @@ Name a layer only when describing that layer.
 
 **Pillars (what MIMO does):** Ground → Orchestrate → Surface (governance is the spine). Mapped to layers: Ground → MIMO Intelligence, Orchestrate → MIMO Orchestration, Surface → MIMO Workspace.
 
-**Retired terms — do not use:** "Brand Brain" (now MIMO Intelligence), "Marketplace" (now Marketspace), "Marketing Operating Model" (not part of the canon), "MIMO by MassLogic," "Neutral AI Operating System," "MIMO Prime" (undefined/unbuilt concept — not canon).
+**Retired terms — do not use:** "Brand Brain" (now MIMO Intelligence), "Marketplace" (now Marketspace), "MIMO by MassLogic," "Neutral AI Operating System," "MIMO Prime" (undefined/unbuilt concept — not canon).
+
+**Note:** "Marketing Operating Model (MOM)" is a general industry term for a customer's own operating framework — acceptable in that generic sense. It is not a MIMO™ product or pillar name; do not brand it as one.
 
 ## Trademarks
 
